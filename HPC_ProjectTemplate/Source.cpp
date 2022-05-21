@@ -88,15 +88,15 @@ int main()
 
 	System::String^ imagePath;
 	std::string img;
-	//img = "E:\\ahmed/hpc/BackGround/in000090.jpg";
-	img = "C:\\Users/pop/Downloads/9.jpeg";
+	img = "E:\\ahmed/hpc/g/10N.png";
+	//img = "C:\\Users/pop/Downloads/9.jpeg";
 	imagePath = marshal_as<System::String^>(img);
 	int* imageData = inputImage(&ImageWidth, &ImageHeight, imagePath);
 
 
 	start_s = clock();
 
-	int index = 13;
+	int index = 1100;
 
 	MPI_Init(NULL, NULL);
 
@@ -116,37 +116,42 @@ int main()
 		localArrSize = localhight * ImageWidth;
 
 		int* Localarr=new int[localArrSize];
-	MPI_Scatter(imageData, localArrSize, MPI_INT, Localarr, localArrSize, MPI_INT, 1, MPI_COMM_WORLD);
-	
-	int sum, column, row;
-	int* localNewArr = new int[localhight* ImageWidth];
-	for (int c = 0; c < localhight; c++)
-	{
-		column = ImageWidth * c;
-
-		for (int r = 0; r < ImageWidth; r++)
-		{
-			row = column + r;
-			sum = 0;
-			for (int i = column; i < (column + 3); i++)
-			{
-				for (int j = row; j < (row + 3); j++)
-				{
-					sum += Localarr[i + (j % ImageWidth)];
-
-				}
-			}
 		
-			sum /= (9);
-			if (sum < 0)
-				sum = 0;
-			if (sum > 255)
-				sum = 255;
+	MPI_Scatter(imageData, localArrSize, MPI_INT, Localarr, localArrSize, MPI_INT, 1, MPI_COMM_WORLD);
 
-			//if(column + row >=10000)
-			//	cout << "rank"<< rank << " , Sum :" << sum << " , column :" << column << " , row :" << row << ", column + row :" << column + row << " , localhight:" << localhight << ", :ImageWidthendl " << ImageWidth << endl;
+	int kernal = ImageHeight/159;
+	cout << "ImageWidth : " << ImageWidth << "kernal : " << kernal << endl;
+	int* localNewArr = new int[localhight* ImageWidth];
+	for (int r = 0; r < ImageWidth; r++)
+		{
+			
+		for (int c = 0; c < localhight; c++)
+			{
+			int sum, column, row;
+				column = ImageWidth * c;
 
-			localNewArr[ row] = sum;
+		
+					row = column + r;
+					sum = 0;
+					for (int i = column; i < (column + kernal); i++)
+					{
+						for (int j = row; j < (row + kernal); j++)
+						{
+							sum += Localarr[i + (j % ImageWidth)];
+
+						}
+					}
+		
+					sum /= (kernal* kernal);
+					if (sum < 0)
+						sum = 0;
+					if (sum > 255)
+						sum = 255;
+
+					//if(column + row >=10000)
+					//	cout << "rank"<< rank << " , Sum :" << sum << " , column :" << column << " , row :" << row << ", column + row :" << column + row << " , localhight:" << localhight << ", :ImageWidth endl " << ImageWidth << endl;
+
+					localNewArr[ row] = sum;
 
 		}
 	}
