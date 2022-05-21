@@ -88,12 +88,8 @@ int main()
 
 	System::String^ imagePath;
 	std::string img;
-<<<<<<< HEAD
-	img = "E:\\ahmed/hpc/g/10N.png";
-	//img = "C:\\Users/pop/Downloads/9.jpeg";
-=======
+
 	img = "path// img //to// load";
->>>>>>> 267425f8ee67a296524220be50e0dece97507363
 	imagePath = marshal_as<System::String^>(img);
 	int* imageData = inputImage(&ImageWidth, &ImageHeight, imagePath);
 
@@ -182,7 +178,7 @@ int main()
 				MyNewImage.SetPixel(r, c, color);
 			}
 		}
-		MyNewImage.Save("..//path to //Data//Output//outputRes);
+		MyNewImage.Save("..//path to //Data//Output//outputRes");
 		cout << "result Image Saved " << index << endl;
 		stop_s = clock();
 		TotalTime += (stop_s - start_s) / double(CLOCKS_PER_SEC) * 1000;
