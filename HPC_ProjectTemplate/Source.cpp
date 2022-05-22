@@ -113,9 +113,6 @@ int main()
 	MPI_Bcast(&ImageWidth, 1, MPI_INT, 0, MPI_COMM_WORLD);
 	MPI_Bcast(&ImageHeight,1,MPI_INT, 0, MPI_COMM_WORLD);
 
-	cout << "after ImageHeight : " << ImageHeight << ",ImageWidth : " << ImageWidth << ", rank : " << rank << endl;
-
-
 	int* newImg = new int[ImageWidth * ImageHeight];
 	localhight = ImageHeight / size;
 	localArrSize = localhight * ImageWidth;
